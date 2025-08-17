@@ -19,9 +19,9 @@ describe("Formulaire -> Enregistrement dans data.json", () => {
   });
 
   it("Ajoute un utilisateur dans data.json", () => {
-    cy.get("#name").type("Alice Martin");
-    cy.get("#email").type("alice.martin@example.com");
-    cy.get("#message").type("Ceci est un message test.");
+    cy.get("name").type("Alice Martin");
+    cy.get("email").type("alice.martin@example.com");
+    cy.get("#essage").type("Ceci est un message test.");
     cy.get("button[type='submit']").click();
 
     // Vérifie la popup de succès
