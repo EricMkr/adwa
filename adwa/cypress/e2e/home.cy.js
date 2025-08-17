@@ -47,3 +47,61 @@ describe("Formulaire Landing Page", () => {
     cy.get("input#email:invalid").should("exist");
   });
 });
+
+/// <reference types="cypress" />
+
+describe("Formulaire Landing Page avec sauvegarde", () => {
+  beforeEach(() => {
+    // Reset du fichier data.json avant chaque test
+    cy.request("POST", "http://localhost:3000/reset");
+
+    // Charge la page
+    cy.visit("http://localhost:3000/index.html");
+  });
+
+  it("Ajoute un nouvel utilisateur et le sauvegarde", () => {
+    cy.get("#name").type("Jean Dupont");
+    cy.get("#email").type("jean.dupont@example.com");
+    cy.get("#message").type("Ceci est un test.");
+    cy.get("button[type='submit']").click();
+
+    // Vérifie la popup de succès
+    cy.on("window:alert", (text) => {
+      expect(text).to.contains("Inscription réussie 🎉");
+    });
+
+    // Vérifie que data.json contient bien l’utilisateur
+    cy.readFile("data.json").then((data) => {
+      expect(data).to.have.length(1);
+      expect(data[0].name).to.equal("Jean Dupont");
+      expect(data[0].email).to.equal("jean.dupont@example.com");
+    });
+  });
+
+  it("Empêche un doublon (nom + email identiques)", () => {
+    // Premier enregistrement
+    cy.get("#name").type("Jean Dupont");
+    cy.get("#email").type("jean.dupont@example.com");
+    cy.get("#message").type("Premier test.");
+    cy.get("button[type='submit']").click();
+
+    cy.on("window:alert", (text) => {
+      expect(text).to.contains("Inscription réussie 🎉");
+    });
+
+    // Réessai avec le même utilisateur
+    cy.get("#name").type("Jean Dupont");
+    cy.get("#email").type("jean.dupont@example.com");
+    cy.get("#message").type("Second test.");
+    cy.get("button[type='submit']").click();
+
+    cy.on("window:alert", (text) => {
+      expect(text).to.contains("User already exists");
+    });
+
+    // Vérifie que data.json contient toujours un seul enregistrement
+    cy.readFile("data.json").then((data) => {
+      expect(data).to.have.length(1);
+    });
+  });
+});
