@@ -14,8 +14,8 @@ describe("Vérification du titre de la page", () => {
 describe("Formulaire -> Enregistrement dans data.json", () => {
   beforeEach(() => {
     // Vide le fichier data.json avant chaque test
-    cy.request("POST", "http://localhost:3000/reset");
-    cy.visit("/index.html");
+    // cy.request("POST", "http://127.0.0.1:3000/adwa/index.html/reset");
+    // cy.visit("http://127.0.0.1:3000/adwa/index.html");
   });
 
   it("Ajoute un utilisateur dans data.json", () => {
