@@ -1,15 +1,9 @@
-describe('Test de la page d’accueil', () => {
-  it('devrait afficher le contenu de la page', () => {
-    cy.visit('http://127.0.0.1:3000/adwa/index.html'); // utilise automatiquement baseUrl
-  });
-});
-
 /// <reference types="cypress" />
 
 describe("Formulaire Landing Page", () => {
   beforeEach(() => {
     // Charge ton index.html local
-    cy.visit("index.html");
+    cy.visit("http://127.0.0.1:3000/adwa/index.html");
   });
 
   it("Affiche bien le formulaire", () => {
